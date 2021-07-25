@@ -1,0 +1,174 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Ignite - Introdução ao S.O.L.I.D.",
+		"description": "API desenvolvida como introdução aos princípios S.O.L.I.D.",
+		"version": "1.0.0",
+		"contact": {
+			"name": "Helder Chaves Leite Junior",
+			"url": "helderchaves.dev",
+			"email": "helder@smartiks.com"
+		}
+	},
+	"paths": {
+		"/users": {
+			"post": {
+				"tags": [
+					"Users"
+				],
+				"summary": "Create a user",
+				"description": "Create a new user",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/User"
+							},
+							"example": {
+								"name": "Danilo Vieira",
+								"email": "danilo@rocketseat.com"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Email already taken"
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"Users"
+				],
+				"summary": "List users",
+				"description": "List all users",
+				"parameters": [
+					{
+						"in": "header",
+						"name": "user_id",
+						"description": "The user ID (UUID)",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/User"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "User does not exists or is not an administrator"
+					}
+				}
+			}
+		},
+		"/users/{user_id}": {
+			"get": {
+				"tags": [
+					"Users"
+				],
+				"summary": "Show user",
+				"description": "Show a specific user",
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"description": "The user ID (UUID)",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"404": {
+					"description": "User does not exists"
+				}
+			}
+		},
+		"/users/{user_id}/admin": {
+			"patch": {
+				"tags": [
+					"Users"
+				],
+				"summary": "Turns user an admin",
+				"description": "Turns an user into an administrator",
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"description": "The user ID (UUID)",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User does not exists"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"User": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}
